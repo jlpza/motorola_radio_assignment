@@ -20,9 +20,13 @@ defmodule MotorolaRadioAssignmentWeb.Router do
   end
 
   # Other scopes may use custom stacks.
-  # scope "/api", MotorolaRadioAssignmentWeb do
-  #   pipe_through :api
-  # end
+  scope "/radios", MotorolaRadioAssignmentWeb do
+    pipe_through :api
+
+    get "/:id", RadiosController, :insert
+    get "/:id/location", RadiosController, :get_location
+    post "/:id/location", RadiosController, :post_location
+  end
 
   # Enables LiveDashboard only for development
   #
