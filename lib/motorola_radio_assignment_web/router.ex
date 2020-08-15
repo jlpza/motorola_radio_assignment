@@ -23,7 +23,7 @@ defmodule MotorolaRadioAssignmentWeb.Router do
   scope "/radios", MotorolaRadioAssignmentWeb do
     pipe_through :api
 
-    get "/:id", RadiosController, :insert
+    post "/:id", RadiosController, :insert
     get "/:id/location", RadiosController, :get_location
     post "/:id/location", RadiosController, :post_location
   end
