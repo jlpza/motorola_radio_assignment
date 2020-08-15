@@ -34,8 +34,16 @@ defmodule MotorolaRadioAssignmentWeb.PageControllerTest do
 
     conn = get(conn, "/radios/#{max_id+1}/location")
     assert json_response(conn, 200)["location"] == "CPH-1"
+  end
 
+  test "Scenario 2", %{conn: conn} do
+    max_id = get_max_id()
 
+    conn = post(conn, "/radios/#{max_id+1}", ["alias": "Radio102", allowed_locations: ["CPH-1", "CPH-3"]])
+    assert response(conn, 200) =~ ""
+
+    conn = get(conn, "/radios/#{max_id+1}/location")
+    assert response(conn, 404) == ""
   end
 
 end
