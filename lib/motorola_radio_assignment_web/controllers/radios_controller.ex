@@ -23,10 +23,8 @@ defmodule MotorolaRadioAssignmentWeb.RadiosController do
         try do
           radio = Repo.get!(Radio, id)
           case radio.location do
-            location when not is_nil(location) ->
-              json(conn, %{"location": radio.location})
-            _ ->
-              conn |> send_resp(:not_found, "")
+            nil -> conn |> send_resp(:not_found, "")
+            location -> json(conn, %{"location": radio.location})
           end
         rescue
           Ecto.NoResultsError ->
@@ -37,8 +35,29 @@ defmodule MotorolaRadioAssignmentWeb.RadiosController do
     end
   end
 
-  def post_location(conn, %{"id" => id}) do
-    conn |> send_resp(:not_found, "")
+  def post_location(conn, %{"id" => id, "location" => location}) do
+    case Integer.parse(id) do
+      {id, ""} ->
+        try do
+          case Repo.get!(Radio, id) do
+            nil ->
+              conn |> send_resp(:not_found, "")
+            radio ->
+              if location in radio.allowed_locations do
+                change = Ecto.Changeset.change(radio, location: location)
+                Repo.update(change)
+                conn |> send_resp(:ok, "")
+              else
+                conn |> send_resp(:forbidden, "")
+              end
+          end
+        rescue
+          Ecto.NoResultsError ->
+            conn |> send_resp(:not_found, "")
+        end
+      _ ->
+        conn |> send_resp(:not_found, "")
+    end
   end
 
 end
