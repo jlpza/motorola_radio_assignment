@@ -9,9 +9,9 @@ defmodule MotorolaRadioAssignmentWeb.RadiosController do
       {id, ""} ->
         try do
           Repo.insert(%Radio{
-              "id": id,
-              "alias": radio_alias,
-              "allowed_locations": allowed_locations
+              id: id,
+              alias: radio_alias,
+              allowed_locations: allowed_locations
           })
           conn |> send_resp(:ok, "")
         rescue
@@ -33,7 +33,7 @@ defmodule MotorolaRadioAssignmentWeb.RadiosController do
           radio = Repo.get!(Radio, id)
           case radio.location do
             nil -> conn |> send_resp(:not_found, "")
-            location -> json(conn, %{"location": radio.location})
+            _ -> json(conn, %{location: radio.location})
           end
         rescue
           Ecto.NoResultsError ->

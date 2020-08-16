@@ -14,10 +14,10 @@ defmodule MotorolaRadioAssignmentWeb.ProposedCasesTest do
   test "Scenario 1", %{conn: conn} do
     max_id = get_max_id()
 
-    conn = post(conn, "/radios/#{max_id+1}", ["alias": "Radio100", allowed_locations: ["CPH-1", "CPH-2"]])
+    conn = post(conn, "/radios/#{max_id+1}", [alias: "Radio100", allowed_locations: ["CPH-1", "CPH-2"]])
     assert response(conn, 200) =~ ""
 
-    conn = post(conn, "/radios/#{max_id+2}", ["alias": "Radio101", allowed_locations: ["CPH-1", "CPH-2", "CPH-3"]])
+    conn = post(conn, "/radios/#{max_id+2}", [alias: "Radio101", allowed_locations: ["CPH-1", "CPH-2", "CPH-3"]])
     assert response(conn, 200) =~ ""
 
     conn = post(conn, "/radios/#{max_id+1}/location", [location: "CPH-1"])
@@ -39,7 +39,7 @@ defmodule MotorolaRadioAssignmentWeb.ProposedCasesTest do
   test "Scenario 2", %{conn: conn} do
     max_id = get_max_id()
 
-    conn = post(conn, "/radios/#{max_id+1}", ["alias": "Radio102", allowed_locations: ["CPH-1", "CPH-3"]])
+    conn = post(conn, "/radios/#{max_id+1}", [alias: "Radio102", allowed_locations: ["CPH-1", "CPH-3"]])
     assert response(conn, 200) =~ ""
 
     conn = get(conn, "/radios/#{max_id+1}/location")

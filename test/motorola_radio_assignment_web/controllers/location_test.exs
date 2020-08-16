@@ -14,7 +14,7 @@ defmodule MotorolaRadioAssignmentWeb.LocationTest do
   test "Get/post location", %{conn: conn} do
     max_id = get_max_id()
 
-    conn = post(conn, "/radios/#{max_id+1}", ["alias": "Radio100", allowed_locations: ["CPH-1", "CPH-3"]])
+    conn = post(conn, "/radios/#{max_id+1}", [alias: "Radio100", allowed_locations: ["CPH-1", "CPH-3"]])
     assert response(conn, 200) =~ ""
 
     conn = post(conn, "/radios/#{max_id+1}/location", [location: "CPH-1"])
@@ -27,7 +27,7 @@ defmodule MotorolaRadioAssignmentWeb.LocationTest do
   test "Post an invalid location", %{conn: conn} do
     max_id = get_max_id()
 
-    conn = post(conn, "/radios/#{max_id+1}", ["alias": "Radio100", allowed_locations: ["CPH-1", "CPH-3"]])
+    conn = post(conn, "/radios/#{max_id+1}", [alias: "Radio100", allowed_locations: ["CPH-1", "CPH-3"]])
     assert response(conn, 200) =~ ""
 
     conn = post(conn, "/radios/#{max_id+1}/location", [location: "CPH-2"])
@@ -52,7 +52,7 @@ defmodule MotorolaRadioAssignmentWeb.LocationTest do
   test "Post location with invalid payoff", %{conn: conn} do
     max_id = get_max_id()
 
-    conn = post(conn, "/radios/#{max_id+1}", ["alias": "Radio100", allowed_locations: ["CPH-1", "CPH-3"]])
+    conn = post(conn, "/radios/#{max_id+1}", [alias: "Radio100", allowed_locations: ["CPH-1", "CPH-3"]])
     assert response(conn, 200) =~ ""
 
     conn = post(conn, "/radios/#{max_id+1}/location", [])
