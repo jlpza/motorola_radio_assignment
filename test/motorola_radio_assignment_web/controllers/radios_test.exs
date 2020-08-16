@@ -24,6 +24,11 @@ defmodule MotorolaRadioAssignmentWeb.RadiosTest do
     assert response(conn, 409) =~ ""
   end
 
+  test "Post radio with invalid ID", %{conn: conn} do
+    conn = post(conn, "/radios/invalid", ["alias": "Radio100", allowed_locations: ["CPH-1", "CPH-3"]])
+    assert response(conn, 404) =~ ""
+  end
+
   test "Post radio with missing data", %{conn: conn} do
     max_id = get_max_id()
 
