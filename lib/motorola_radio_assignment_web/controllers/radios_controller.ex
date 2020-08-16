@@ -17,6 +17,10 @@ defmodule MotorolaRadioAssignmentWeb.RadiosController do
     end
   end
 
+  def insert(conn, _) do
+    conn |> send_resp(:bad_request, "")
+  end
+
   def get_location(conn, %{"id" => id}) do
     case Integer.parse(id) do
       {id, ""} ->
@@ -58,6 +62,10 @@ defmodule MotorolaRadioAssignmentWeb.RadiosController do
       _ ->
         conn |> send_resp(:not_found, "")
     end
+  end
+
+  def post_location(conn, _) do
+    conn |> send_resp(:bad_request, "")
   end
 
 end
