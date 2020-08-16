@@ -7,12 +7,9 @@ defmodule MotorolaRadioAssignmentWeb.RadiosController do
       when is_list(allowed_locations) do
     case Integer.parse(id) do
       {id, ""} ->
-        try do
-          Domain.insert_radio(id, radio_alias, allowed_locations)
-          conn |> send_resp(:ok, "")
-        rescue
-            Ecto.ConstraintError ->
-              conn |> send_resp(:conflict, "The radio could not be created because a constraint was violated. Possibly the ID already exists.")
+        case Domain.insert_radio(id, radio_alias, allowed_locations) do
+          :ok -> conn |> send_resp(:ok, "")
+          :constraint_violation -> conn |> send_resp(:conflict, "A constraint was violated. Possibly the ID already exists.")
         end
       _ ->
         conn |> send_resp(:not_found, "")
