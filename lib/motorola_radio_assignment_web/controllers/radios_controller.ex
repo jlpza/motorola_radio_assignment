@@ -23,19 +23,18 @@ defmodule MotorolaRadioAssignmentWeb.RadiosController do
   def get_location(conn, %{"id" => id}) do
     case Integer.parse(id) do
       {id, ""} ->
-        try do
-          location = Domain.get_radio_location(id)
-          case location do
-            nil -> conn |> send_resp(:not_found, "")
-            location -> json(conn, %{location: location})
-          end
-        rescue
-          Ecto.NoResultsError ->
-            conn |> send_resp(:not_found, "")
+        case Domain.get_radio_location(id) do
+          {:ok, location} -> json(conn, %{location: location})
+          {:invalid_id, _} -> conn |> send_resp(:not_found, "")
+          {:no_location, _} -> conn |> send_resp(:not_found, "")
         end
       _ ->
         conn |> send_resp(:not_found, "")
     end
+  end
+
+  def get_location(conn, _) do
+    conn |> send_resp(:bad_request, "")
   end
 
   def post_location(conn, %{"id" => id, "location" => location}) do

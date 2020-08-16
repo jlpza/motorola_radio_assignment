@@ -32,13 +32,21 @@ defmodule MotorolaRadioAssignment.Domain do
 
   @doc """
   Get the location of a preexisting radio based on its id.
-  If the radio does not exist, an exception is raised.
-  If the radio does not have a location, nil is returned.
 
-  Returns: Location of the radio with said ID.
+  Returns `{:ok, location}`: If successful.
+  Returns `{:invalid_id, nil}`: If the radio does not exist.
+  Returns `{:no_location, nil}`: If the radio does not have a location.
   """
   def get_radio_location(id) when is_integer(id) do
-    Repo.get!(Radio, id).location
+    case Repo.get(Radio, id) do
+      nil ->
+        {:invalid_id, nil}
+      radio ->
+        case radio.location do
+          nil -> {:no_location, nil}
+          location -> {:ok, location}
+        end
+    end
   end
 
   @doc """
