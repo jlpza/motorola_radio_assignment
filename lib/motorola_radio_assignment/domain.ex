@@ -1,4 +1,7 @@
 defmodule MotorolaRadioAssignment.Domain do
+  @moduledoc """  
+  This module encapsulates the business logic of the assignment.
+  """
 
   use Ecto.Repo,
     otp_app: :motorola_radio_assignment,
@@ -6,6 +9,12 @@ defmodule MotorolaRadioAssignment.Domain do
 
     alias MotorolaRadioAssignment.{Radio, Repo}
 
+  @doc """
+  Add a radio to the database.
+
+  Returns `:ok`: Transaction performed successfully.
+  Returns `:constraint_violation`: Transaction not performed due to invalid constraint. Probably the ID already existed.
+  """
   def insert_radio(id, radio_alias, allowed_locations) when is_integer(id) and
         is_bitstring(radio_alias) and is_list(allowed_locations) do
     try do
@@ -21,10 +30,24 @@ defmodule MotorolaRadioAssignment.Domain do
 
   end
 
+  @doc """
+  Get the location of a preexisting radio based on its id.
+  If the radio does not exist, an exception is raised.
+  If the radio does not have a location, nil is returned.
+
+  Returns: Location of the radio with said ID.
+  """
   def get_radio_location(id) when is_integer(id) do
     Repo.get!(Radio, id).location
   end
 
+  @doc """
+  Set the location of a preexisting radio.
+
+  Returns `:ok`: Transaction performed successfully.
+  Returns `:invalid_id`: The ID did not correspond to any radio.
+  Returns `:invalid_location`: The location is not in the allowed_locations list for the radio.
+  """
   def set_radio_location(id, location) when is_integer(id) and is_bitstring(location) do
     case Repo.get(Radio, id) do
       nil ->
